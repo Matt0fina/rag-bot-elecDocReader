@@ -4,8 +4,10 @@ import aiofiles
 from typing import List
 from fastapi import UploadFile
 
-from langchain.document_loaders import PyPDFLoader
-from langchain.text_splitter import TokenTextSplitter
+# from langchain_community.document_loaders import PyPDFLoader
+from langchain_community.document_loaders import PyMuPDFLoader
+#from langchain_text_splitters import TokenTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 from config.settings import TEMPFILE_UPLOAD_DIRECTORY
 from utils.logger import logger
@@ -43,7 +45,7 @@ async def save_uploaded_file(files: List[UploadFile]) -> List[str]:
 def load_documents_from_paths(file_paths: List[str]):
   docs = []
   for file_path in file_paths:
-    loader = PyPDFLoader(file_path)
+    loader = PyMuPDFLoader(file_path)
     loaded = loader.load()
     logger.debug(f"Loaded {len(loaded)} documents from {file_path}")
     docs.extend(loaded)
@@ -51,7 +53,11 @@ def load_documents_from_paths(file_paths: List[str]):
   return docs
 
 def split_documents_to_chunks(docs) -> List[str]:
-  text_splitter = TokenTextSplitter(chunk_size=500, chunk_overlap=50)
+  text_splitter = RecursiveCharacterTextSplitter(
+    chunk_size=1000,
+    chunk_overlap=150,
+    separators=["\n\n", "\n", "•", " ", ""]
+    )
   chunks = text_splitter.split_documents(docs)
-  logger.debug(f"Split {len(docs)} docs into {len(chunks)} chunks")
+  #logger.debug(f"Split {len(docs)} docs into {len(chunks)} chunks")
   return chunks

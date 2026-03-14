@@ -1,8 +1,8 @@
 from config.settings import GROQ_API_KEY, GOOGLE_API_KEY
 
-from langchain.prompts import ChatPromptTemplate
-from langchain.chains import create_retrieval_chain
-from langchain.chains.combine_documents import create_stuff_documents_chain
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_classic.chains.retrieval import create_retrieval_chain
+from langchain_classic.chains.combine_documents import create_stuff_documents_chain
 
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_groq import ChatGroq
@@ -11,10 +11,15 @@ from utils.logger import logger
 
 
 def get_prompt():
-  logger.debug("Creating chat prompt template.")
+  logger.debug("Creating hardware specific chat prompt template.")
   return ChatPromptTemplate.from_messages([
-    ("system", "Answer as detailed as possible using the context below. If unknown, say 'I don't know.'"),
-    ("human", "Context:\n{context}\n\n\nQuestion:\n{input}")
+    ("system", """You are an expert Test Engineer specializing in automated component characterization.
+     Extract precise component parameters (e.g., R_DS(on), transconductance, absolute maximum ratings) from the datasheet context.
+     
+     - If the user asks for simulation parameters, format the output as a valid .model directive suitable for LTSpice.
+     - If the user asks for layout details, prioritize pad dimensions and thermal resistance (RthJC).
+     - Do not hallucinate. If a value is missing, state 'Parameter not found in datasheet.'"""),
+    ("human", "Context:\n{context}\n\n\nEngineer's Query:\n{input}")
   ])
 
 def get_llm(model_provider: str, model: str):
