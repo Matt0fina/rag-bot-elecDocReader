@@ -1,4 +1,6 @@
 from config.settings import GROQ_API_KEY, GOOGLE_API_KEY
+from operator import itemgetter
+from langchain_core.output_parsers import StrOutputParser
 
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_classic.chains.retrieval import create_retrieval_chain
@@ -10,25 +12,21 @@ from langchain_groq import ChatGroq
 from utils.logger import logger
 
 def get_prompt():
-    logger.debug("Creating structured JSON chat prompt template.")
-    # Note: We use double curly braces {{ }} to escape standard JSON syntax in LangChain prompts
     return ChatPromptTemplate.from_messages([
         ("system", """You are an expert Test Engineer assistant.
-        Extract precise component parameters from the context.
         
-        CRITICAL: You MUST return your entire response as a valid, raw JSON object. Do not include markdown formatting like ```json.
+        CRITICAL RULES:
+        1. ONLY extract parameters that the user EXPLICITLY asks for. If they ask for "Common-Mode Voltage", DO NOT extract Supply Voltage or Current.
+        2. If the user asks a general question and does NOT ask for specific parameters, leave the "parameters" list empty [].
+        3. You MUST return your response as raw, valid JSON. Do not include markdown tags like ```json.
         
-        Format your response EXACTLY like this:
+        Format EXACTLY like this:
         {{
-            "answer": "Your detailed textual explanation and analysis here...",
+            "answer": "Your detailed textual explanation here...",
             "parameters": [
-                {{"Parameter": "V_CMR (Min)", "Value": "V_SS - 0.3V", "Condition": "V_DD = 5V"}},
-                {{"Parameter": "Max Supply Voltage", "Value": "7.0V", "Condition": "Absolute Maximum"}}
+                {{"Parameter": "Name", "Value": "Data", "Condition": "Context"}}
             ]
-        }}
-        
-        - If no specific parameters are found, return an empty list [] for "parameters".
-        - Do not hallucinate values."""),
+        }}"""),
         ("human", "Datasheet Context:\n{context}\n\nEngineer's Query:\n{input}")
     ])
 
@@ -55,12 +53,23 @@ def get_llm(model_provider: str, model: str):
     raise ValueError(f"Unsupported LLM Provider: {model_provider}")
 
 def build_llm_chain(model_provider: str, model: str, vectorstore):
-  logger.debug(f"Building LLM chain for provider: {model_provider}, model: {model}")
-  prompt = get_prompt()
-  llm = get_llm(model_provider, model)
-  retriever = vectorstore.as_retriever(search_kwargs={"k": 3})
-
-  return create_retrieval_chain(
-    retriever,
-    create_stuff_documents_chain(llm, prompt=prompt)
-  )
+    logger.debug(f"Building LCEL chain for provider: {model_provider}, model: {model}")
+    
+    prompt = get_prompt()
+    llm = get_llm(model_provider, model)
+    retriever = vectorstore.as_retriever(search_kwargs={"k": 3})
+    
+    # --- The Modern LCEL Architecture ---
+    chain = (
+        {
+            # itemgetter extracts ONLY the string to send to the retriever
+            "context": itemgetter("input") | retriever, 
+            # passes the string straight through to the prompt
+            "input": itemgetter("input") 
+        }
+        | prompt
+        | llm
+        | StrOutputParser() # Automatically cleans the output into a pure string
+    )
+    
+    return chain
