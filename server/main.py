@@ -1,4 +1,6 @@
 import uvicorn
+import json
+from pydantic import BaseModel
 
 from fastapi import FastAPI
 
@@ -6,6 +8,9 @@ from api.routes import router
 from core.vector_database import initialize_empty_vectorstores
 from utils.logger import logger
 
+class ChatRequest(BaseModel):
+  query: str
+  workspace: str
 
 app = FastAPI(title="RAG PDFBot", description="Chat with multiple PDFs :books:")
 app.include_router(router)

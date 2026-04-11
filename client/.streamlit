@@ -1,0 +1,12 @@
+[theme]
+# A dark, high-contrast theme suitable for engineering environments
+base = "dark"
+primaryColor = "#00FF9D" # Laser/terminal green for accents
+backgroundColor = "#0E1117" # Deep dark gray/black background
+secondaryBackgroundColor = "#1E232F" # Slightly lighter gray for sidebars and widgets
+textColor = "#E0E6ED"
+font = "sans serif"
+
+[layout]
+# Forces the app to use the full width of the monitor
+max_width = "100%"
