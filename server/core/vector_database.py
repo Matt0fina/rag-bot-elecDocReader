@@ -1,4 +1,5 @@
 import os
+import shutil
 
 from typing import List
 from fastapi import UploadFile
@@ -57,15 +58,15 @@ async def upsert_vectorstore_from_pdfs(uploaded_files: List[UploadFile], model_p
   persist_path = VECTORSTORE_DIRECTORY[model_provider]
 
   if vectorstore_exists(persist_path):
-    logger.debug("Appending to existing vectorstore...")
-    vectorstore = Chroma(persist_directory=persist_path, embedding_function=embedding)
-    vectorstore.add_documents(chunks)
-    logger.debug(f"Added {len(chunks)} chunks to existing vectorstore.")
-  else:
-    vectorstore = Chroma.from_documents(documents=chunks, embedding=embedding, persist_directory=persist_path)
-    logger.debug(f"Created new vectorstore with {len(chunks)} chunks.")
-
-  return vectorstore
+    logger.debug("Wiping existing vectorstore to prevent context overlap...")
+    try:
+      # Physically delete the vectorstore directory
+      shutil.rmtree(persist_path)
+    except PermissionError:
+      logger.warning(f"File lock detected on {persist_path}. Could not delete.")
+    
+    # Re-create the empty directory
+    os.makedirs(persist_path, exist_ok=True)
 
 def load_vectorstore(model_provider: str):
   persist_path = VECTORSTORE_DIRECTORY[model_provider]
