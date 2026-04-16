@@ -110,7 +110,6 @@ def main():
       # Generate Assistant Response
       with st.chat_message("assistant"):
         with st.spinner("Querying Vector Database..."):
-          # TODO: Replace with your actual FastAPI chat endpoint request
           payload = {"query": prompt, "workspace": workspace}
 
           try:

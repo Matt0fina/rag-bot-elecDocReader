@@ -46,7 +46,7 @@ def build_llm_chain(model_provider: str, model: str, vectorstore):
   
   prompt = get_prompt()
   llm = get_llm(model_provider, model)
-  retriever = vectorstore.as_retriever(search_kwargs={"k": 3})
+  retriever = vectorstore.as_retriever(search_kwargs={"k": 15})
 
   chain = (
     {
