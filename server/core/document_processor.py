@@ -4,9 +4,8 @@ import aiofiles
 from typing import List
 from fastapi import UploadFile
 
-# from langchain_community.document_loaders import PyPDFLoader
-from langchain_community.document_loaders import UnstructuredAPIFileLoader
-#from langchain_text_splitters import TokenTextSplitter
+from langchain_community.document_loaders import PyMuPDFLoader
+#from langchain_community.document_loaders import UnstructuredAPIFileLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 from config.settings import TEMPFILE_UPLOAD_DIRECTORY, UNSTRUCTURED_API_KEY, UNSTRUCTURED_API_URL
@@ -41,46 +40,46 @@ async def save_uploaded_file(files: List[UploadFile]) -> List[str]:
 
   return file_paths
 
-# def load_documents_from_paths(file_paths: List[str]):
-#   docs = []
-#   for file_path in file_paths:
-#     loader = PyMuPDFLoader(file_path)
-#     loaded = loader.load()
-#     logger.debug(f"Loaded {len(loaded)} documents from {file_path}")
-#     docs.extend(loaded)
-
-#   return docs
-
 def load_documents_from_paths(file_paths: List[str]):
-    docs = []
-    for file_path in file_paths:
-        logger.debug(f"Sending {file_path} to Unstructured API for layout analysis...")
+  docs = []
+  for file_path in file_paths:
+    loader = PyMuPDFLoader(file_path)
+    loaded = loader.load()
+    logger.debug(f"Loaded {len(loaded)} documents from {file_path}")
+    docs.extend(loaded)
+
+  return docs
+
+# def load_documents_from_paths(file_paths: List[str]):
+#     docs = []
+#     for file_path in file_paths:
+#         logger.debug(f"Sending {file_path} to Unstructured API for layout analysis...")
         
-        # Initialize the API loader
-        loader = UnstructuredAPIFileLoader(
-            file_path=file_path,
-            api_key=UNSTRUCTURED_API_KEY,
-            url=UNSTRUCTURED_API_URL,
-            strategy="hi_res",
-            mode="elements"
-        )
+#         # Initialize the API loader
+#         loader = UnstructuredAPIFileLoader(
+#             file_path=file_path,
+#             api_key=UNSTRUCTURED_API_KEY,
+#             url=UNSTRUCTURED_API_URL,
+#             strategy="hi_res",
+#             mode="elements"
+#         )
         
-        loaded = loader.load()
-        logger.debug(f"Successfully returned {len(loaded)} parsed elements.")
-        docs.extend(loaded)
+#         loaded = loader.load()
+#         logger.debug(f"Successfully returned {len(loaded)} parsed elements.")
+#         docs.extend(loaded)
 
-    return docs
+#     return docs
 
-# def split_documents_to_chunks(docs) -> List[str]:
-#   text_splitter = RecursiveCharacterTextSplitter(
-#     chunk_size=1000,
-#     chunk_overlap=150,
-#     separators=["\n\n", "\n", "•", " ", ""]
-#     )
-#   chunks = text_splitter.split_documents(docs)
-#   #logger.debug(f"Split {len(docs)} docs into {len(chunks)} chunks")
-#   return chunks
+def split_documents_to_chunks(docs) -> List[str]:
+  text_splitter = RecursiveCharacterTextSplitter(
+    chunk_size=1000,
+    chunk_overlap=150,
+    separators=["\n\n", "\n", "•", " ", ""]
+    )
+  chunks = text_splitter.split_documents(docs)
+  #logger.debug(f"Split {len(docs)} docs into {len(chunks)} chunks")
+  return chunks
 
 
-def split_documents_to_chunks(docs):
-    return docs
+# def split_documents_to_chunks(docs):
+#     return docs

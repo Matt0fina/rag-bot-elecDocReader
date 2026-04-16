@@ -13,7 +13,7 @@ from utils.logger import logger
 
 def get_prompt():
   return ChatPromptTemplate.from_messages([
-    ("system", """You are an expert Test Engineer assistant.
+    ("system", """You are an expert Electrical Engineer specialized in hardware engineering.
     
     CRITICAL RULES:
     1. ONLY extract parameters that the user EXPLICITLY asks for. If they ask for "Common-Mode Voltage", DO NOT extract Supply Voltage or Current.
@@ -46,7 +46,7 @@ def build_llm_chain(model_provider: str, model: str, vectorstore):
   
   prompt = get_prompt()
   llm = get_llm(model_provider, model)
-  retriever = vectorstore.as_retriever(search_kwargs={"k": 15})
+  retriever = vectorstore.as_retriever(search_kwargs={"k": 3})
 
   chain = (
     {

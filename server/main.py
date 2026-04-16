@@ -19,24 +19,24 @@ app.include_router(router)
 @app.post("/extract")
 async def chat_endpoint(request: ChatRequest):
     try:
-        # 1. Hardcoding the provider and model for the pitch
+        # Hardcoding the provider and model for the pitch
         model_provider = "groq"
-        model_name = "llama-3.3-70b-versatile"
+        model_name = "llama-3.1-8b-instant"
         
-        # 2. Build your chain using the functions from your core folders
+        # Build chain using the functions from core folders
         vector_store = load_vectorstore(model_provider)
         chain = build_llm_chain(model_provider, model_name, vector_store)
         
-        # 3. Run the query
+        # Run the query
         result = chain.invoke({"input": request.query}) 
         
-        # 4. Extract the output string safely
+        # Extract the output string safely
         if isinstance(result, dict):
             raw_output = result.get("answer") or result.get("result", "")
         else:
             raw_output = result 
         
-        # 5. Clean and parse the JSON output from the LLM
+        # Clean and parse the JSON output from the LLM
         clean_json_string = raw_output.strip()
 
         if clean_json_string.startswith("```json"):
