@@ -21,7 +21,7 @@ async def chat_endpoint(request: ChatRequest):
     try:
         # 1. Hardcoding the provider and model for the pitch
         model_provider = "groq"
-        model_name = "llama-3.1-8b-instant"
+        model_name = "llama-3.3-70b-versatile"
         
         # 2. Build your chain using the functions from your core folders
         vector_store = load_vectorstore(model_provider)
