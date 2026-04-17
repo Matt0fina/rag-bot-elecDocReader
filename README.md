@@ -1,7 +1,7 @@
 # ⚡ ElecDocReader: Multimodal RAG for Electrical Datasheet Extraction
 
 <img width="2513" height="1305" alt="image" src="https://github.com/user-attachments/assets/99d4aab2-d58b-4c0d-a06c-76917429771a" />
-[streamlit-app-2026-04-16-22-18-56.webm](https://github.com/user-attachments/assets/5900b492-f596-4ba9-be17-4f17dc6c4ab4)
+https://github.com/user-attachments/assets/5900b492-f596-4ba9-be17-4f17dc6c4ab4
 
 ## 📖 Project Objective
 In Electronic Design Automation (EDA) and Hardware/Test Engineering, extracting exact parameters from dense electrical component datasheets is a massive, time-consuming bottleneck. Engineers rely on highly specific data—such as dynamic AC characteristics, test conditions, and absolute maximum ratings—to build reliable simulation models (like SPICE). 
@@ -25,6 +25,7 @@ A Two-Proportion Z-Test confirmed this **30.0% absolute improvement is statistic
 2. **Tier 2 (Condition Mapping):** Maintained row-column integrity in dense tables, successfully linking parameters (e.g., $h_{FE}$) to nested test conditions (e.g., $I_C = 150mA$, $V_{CE} = 10V$).
 3. **Tier 3 (Safety Thresholds):** Mitigated the **"Vector Overlap"** problem, ensuring the retriever successfully differentiates between "Nominal Operating Ranges" and critical "Absolute Maximum Ratings."
 
+<img width="2454" height="1509" alt="image" src="https://github.com/user-attachments/assets/3738a73e-d800-49f2-a064-def131a9202b" />
 ---
 
 ## 🛠️ Architecture & Tech Stack
