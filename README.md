@@ -1,7 +1,7 @@
 # ⚡ ElecDocReader: Multimodal RAG for Electrical Datasheet Extraction
 
 <img width="2513" height="1305" alt="image" src="https://github.com/user-attachments/assets/99d4aab2-d58b-4c0d-a06c-76917429771a" />
-https://github.com/user-attachments/assets/5900b492-f596-4ba9-be17-4f17dc6c4ab4
+<video src="https://github.com/user-attachments/assets/cc7b0350-fe41-4044-baae-94096979ec80" width="100%" autoplay loop muted></video>
 
 ## 📖 Project Objective
 In Electronic Design Automation (EDA) and Hardware/Test Engineering, extracting exact parameters from dense electrical component datasheets is a massive, time-consuming bottleneck. Engineers rely on highly specific data—such as dynamic AC characteristics, test conditions, and absolute maximum ratings—to build reliable simulation models (like SPICE). 
