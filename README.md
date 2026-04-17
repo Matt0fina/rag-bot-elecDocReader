@@ -1,7 +1,7 @@
 # ⚡ ElecDocReader: Multimodal RAG for Electrical Datasheet Extraction
 
 <img width="2513" height="1305" alt="image" src="https://github.com/user-attachments/assets/99d4aab2-d58b-4c0d-a06c-76917429771a" />
-[streamlit-app-2026-04-16-22-18-56.webm](https://github.com/user-attachments/assets/e9e3752d-f82b-4ccb-a81b-f15ef282bebe)
+https://github.com/user-attachments/assets/96859516-b041-4a2d-bd5e-aa912f5ee2d1
 
 
 ## 📖 Project Objective
@@ -56,6 +56,6 @@ git clone [https://github.com/YourUsername/rag-bot-elecDocReader.git](https://gi
 cd rag-bot-elecDocReader
 ```
 
-https://github.com/user-attachments/assets/96859516-b041-4a2d-bd5e-aa912f5ee2d1
+
 
 
