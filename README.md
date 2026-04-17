@@ -2,7 +2,7 @@
 
 <img width="2513" height="1305" alt="image" src="https://github.com/user-attachments/assets/99d4aab2-d58b-4c0d-a06c-76917429771a" />
 https://github.com/user-attachments/assets/96859516-b041-4a2d-bd5e-aa912f5ee2d1
-
+https://github.com/user-attachments/assets/7a999702-2a47-4361-bb9f-cc38080a36d6
 
 ## 📖 Project Objective
 In Electronic Design Automation (EDA) and Hardware/Test Engineering, extracting exact parameters from dense electrical component datasheets is a massive, time-consuming bottleneck. Engineers rely on highly specific data—such as dynamic AC characteristics, test conditions, and absolute maximum ratings—to build reliable simulation models (like SPICE). 
@@ -56,6 +56,25 @@ git clone [https://github.com/YourUsername/rag-bot-elecDocReader.git](https://gi
 cd rag-bot-elecDocReader
 ```
 
+### Environment Setup
+Create a virtual environement and install the required dependencies:
+```bash
+# Create and activate virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows use: venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+```
+
+### Configuration
+```bash
+Groq_API_KEY=your_groq_api_key_here
+GOOGLE_API_KEY=your_google_api_key_here
+UNSTRUCTURED_API_KEY=your_unstructured_api_key_here
+```
+
+### Running the Application
 
 
 
